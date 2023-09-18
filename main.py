@@ -19,10 +19,7 @@ def voice_recording(stop_event):
     sample_format = pyaudio.paInt16
     channels = 1
     sample_rate = 44100
-
-    # Inicjalizacja PyAudio
     pa = pyaudio.PyAudio()
-
     stream = pa.open(format=sample_format,
                      channels=channels,
                      rate=sample_rate,
@@ -69,14 +66,8 @@ def recording(stop_event):
 def merge_video_audio(video_file, audio_file, output_file):
     video = VideoFileClip(video_file)
     audio = AudioFileClip(audio_file)
-
-    # Ustalanie długości nagrania dźwiękowego na podstawie długości nagrania wideo
     video = video.subclip(0, audio.duration)
-
-    # Połączenie wideo i dźwięku
     video = video.set_audio(audio)
-
-    # Zapisanie połączonego pliku wideo
     video.write_videofile(output_file, codec="libx264", audio_codec="aac")
 
 class MainWindow(QMainWindow):
@@ -106,8 +97,8 @@ class MainWindow(QMainWindow):
 
     def stop(self):
         self.clicked_stop = True
-        self.elapsed_time = QTime(0, 0, 0)  # Reset the elapsed time to 0
-        self.timeEdit.setTime(self.elapsed_time)  # Update the QTimeEdit with the reset time
+        self.elapsed_time = QTime(0, 0, 0)  
+        self.timeEdit.setTime(self.elapsed_time)
         self.checkBox.setChecked(False)
         self.stop_event.set()
         self.voice_process.join()
